@@ -1,0 +1,13 @@
+Transaction ID,Date,Time,Type,Name,Emoji,Category,Amount,Currency,Local amount,Local currency,Notes and #tags,Address,Receipt,Description,Category split,Money Out,Money In
+example_001,01/01/2020,04:03:27,Direct Debit,Amazon,,Shopping,-15.99,GBP,-15.99,GBP,,,,,,-15.99,
+example_002,01/01/2020,12:32:04,Card payment,Tesco,🍏 ,General,-18.89,GBP,-18.89,GBP,,,,,,-18.89,
+example_003,03/02/2020,16:35:48,Faster payment,Odeon,,Eating out,-5,GBP,-5,GBP,Fabtastic Film,,,,,-5,
+example_004,05/03/2020,17:17:17,Card payment,Tesco,🍏 ,General,-15.01,GBP,-15.01,GBP,,,,,,-15.01,
+example_005,06/04/2020,18:50:27,Card payment,This will be ignored,💻,Entertainment,0,GBP,0,GBP,,,,,,0,
+example_006,06/05/2020,18:51:58,Card payment,As will this,💻,Entertainment,0,GBP,0,GBP,,,,,,0,
+example_007,06/06/2020,18:54:08,Card payment,Trainline,🚄,Transport,-14.95,GBP,-14.95,GBP,,,,,,-14.95,
+example_008,07/07/2020,14:16:23,Faster payment,Savings Account,,,11.89,GBP,11.89,GBP,Savings,,,,,,11.89
+example_009,08/07/2020,03:11:52,Direct Debit,Landlord,,Shopping,-40,GBP,-40,GBP,,,,,,-40,
+example_010,08/07/2020,13:10:54,Card payment,Tesco,🍏 ,General,-17.44,GBP,-17.44,GBP,,,,,,-17.44,
+example_011,11/10/2020,21:04:26,Faster payment,Johnny Appletree,,Eating out,9.99,GBP,9.99,GBP,Ramen,,,,,,9.99
+example_012,11/12/2020,21:53:39,Card payment,Tesco,🍏 ,General,-3.1,GBP,-3.1,GBP,,,,,,-3.1,

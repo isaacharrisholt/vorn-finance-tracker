@@ -1,0 +1,8 @@
+food
+transport
+rent
+savings-deposit
+entertainment
+eating-out
+random-expenses
+other
