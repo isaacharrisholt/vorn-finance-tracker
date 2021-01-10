@@ -1,1 +1,1 @@
-# monzo-finance-tracker
+# Monzo Finance Tracker
