@@ -53,8 +53,16 @@ except KeyError:
 
 # Generates lists of user income and outgoings categories to categorise transactions
 with open("./files/outgoings_categories.txt", "r") as out_cats, open("./files/income_categories.txt", "r") as in_cats:
-    outgoings_categories = out_cats.read().splitlines()
-    income_categories = in_cats.read().splitlines()
+    outgoings_categories = []
+    income_categories = []
+
+    for line in out_cats.read().splitlines():
+        if line not in outgoings_categories:
+            outgoings_categories.append(line)
+
+    for line in in_cats.read().splitlines():
+        if line not in income_categories:
+            income_categories.append(line)
 
     out_cats.close()
     in_cats.close()
