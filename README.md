@@ -135,6 +135,7 @@ anything you'd like added, please let me know!
 - [ ] Expand support to all banks
 - [ ] Make category customisation more user-friendly
 - [ ] Expand spreadsheet customisation options
+- [ ] Add a GUI
 - [ ] \(Maybe) Integrate with banking APIs so transactions can be obtained programmatically
 
 ## Contribute
