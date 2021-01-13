@@ -51,18 +51,24 @@ except KeyError:
           "the developer.")
     exit()
 
-# Generates lists of user income and outgoings categories to categorise transactions
+# Generates dictionaries of user income and outgoings categories and rows of the spreadsheet
 with open("./files/outgoings_categories.txt", "r") as out_cats, open("./files/income_categories.txt", "r") as in_cats:
-    outgoings_categories = []
-    income_categories = []
+    outgoings_categories = {}
+    income_categories = {}
 
     for line in out_cats.read().splitlines():
-        if line not in outgoings_categories:
-            outgoings_categories.append(line)
+        category_and_row = line.strip().split(":")
+        user_category = category_and_row[0].strip().lower()
+        row = category_and_row[1].replace(" ", "-")
+
+        outgoings_categories[user_category] = row
 
     for line in in_cats.read().splitlines():
-        if line not in income_categories:
-            income_categories.append(line)
+        category_and_row = line.strip().split(":")
+        user_category = category_and_row[0].strip().lower()
+        row = category_and_row[1].replace(" ", "-")
+
+        income_categories[user_category] = row
 
     out_cats.close()
     in_cats.close()
@@ -122,7 +128,7 @@ for month in income_balances:
         income_balances[month][key] = round(income_balances[month][key], 2)
 
 # Inserts data into spreadsheet
-sm.insert_into_spreadsheet(xlsx_path, outgoings_balances, income_balances)
+sm.insert_into_spreadsheet(xlsx_path, outgoings_categories, income_categories, outgoings_balances, income_balances)
 
 # Saves transaction history
 with open("files/transaction_history.json", "w") as transaction_history_file:

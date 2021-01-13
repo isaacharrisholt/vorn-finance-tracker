@@ -1,8 +1,8 @@
-food
-transport
-rent
-savings-deposit
-entertainment
-eating-out
-random-expenses
-other
+food: 7
+transport: 8
+rent: 9
+savings deposit: 12
+entertainment: 15
+eating out: 16
+random expenses: 17
+other: 18

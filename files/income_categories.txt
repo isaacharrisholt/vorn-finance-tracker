@@ -1,7 +1,7 @@
-job
-other-work
-savings-withdrawal
-refunds
-birthday
-christmas
-other-gifts
+job: 23
+other work: 24
+savings withdrawal: 27
+refunds: 28
+birthday: 31
+christmas: 32
+other gifts: 33
