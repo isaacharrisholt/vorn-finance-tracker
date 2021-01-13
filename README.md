@@ -9,8 +9,7 @@ spreadsheet. It currently only works with data from a Monzo bank account and run
 - [pandas 1.2.0 or newer](https://pandas.pydata.org/)
 - [openpyxl 3.0.5 or newer](https://pypi.org/project/openpyxl/)
 
-Once Python is installed, pandas and openpyxl can be installed by running `install_prerequesites.bat` once Python is 
-installed (Windows) or from the command line using [pip](https://pypi.org/project/pip/):
+Once Python is installed, pandas and openpyxl can be installed by running `install_prerequesites.bat` (Windows) or from the command line using [pip](https://pypi.org/project/pip/):
 
 ```commandline
 pip install -r requirements.txt
