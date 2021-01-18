@@ -1,7 +1,12 @@
-# Monzo Finance Tracker
+# Vorn Finance Tracker
 
-Monzo Finance Tracker is a Python program that categorises your income and spending and writes the data into a
-spreadsheet. It currently only works with data from a Monzo bank account and runs offline.
+Vorn Finance Tracker is a Python program that categorises your income and spending and writes the data into a
+spreadsheet. It works with any bank account that allows you to export a CSV file containing your transactions (support
+for QIF files coming soon). 
+
+Note: if you bank with Santander and download your CSV file through their "Midata" system, check it before you run the
+program, as it's usually horrifically formatted, even for a CSV file. This isn't something I can correct, and is down
+to Santander themselves to sort. Sorry folks.
 
 ## Prerequisite Software
 
@@ -18,32 +23,55 @@ pip install -r requirements.txt
 
 ## Installation
 
-Monzo Finance Tracker can either be installed by downloading the repository from
-[the GitHub page](https://github.com/isaacharrisholt/monzo-finance-tracker) or by running the following command if git
+Vorn Finance Tracker can either be installed by downloading the repository from
+[the GitHub page](https://github.com/isaacharrisholt/vorn-finance-tracker) or by running the following command if git
 is installed on your machine:
 ```commandline
-git clone https://github.com/isaacharrisholt/monzo-finance-tracker
+git clone https://github.com/isaacharrisholt/vorn-finance-tracker
 ```
 
 ## Usage
-In order to use Monzo Finance Tracker, you need two things:
-1. A CSV file downloaded from Monzo containing your transaction data.
-   - You can download this by going into the __Summary__ page in the Monzo app (click the pie chart icon in the top
-     right), scrolling to the bottom of the page and clicking "Export and Bank Statements", choosing the current month
-     or "All time", then "Comma Separated (CSV)". Enter your card's pin and email the CSV file to an account you have
-     access to on your computer.
+In order to use Vorn Finance Tracker, you need two things:
+1. A CSV file downloaded from your bank containing your transaction data.
+   - This will be different depending on your bank, so you may have to Google how to get hold of one. 
 2. A spreadsheet for the data to be output into.
    - A `spreadsheet_template.xlsx` is included in the program files. Feel free to copy and modify that in any way you
     like. See [Using Custom Categories](#using-custom-categories) for info on how to use categories other than the 
      default, so you can customise the spreadsheet to your liking.
      
-Once you have these, run `monzo_finance_tracker.py`. This can either be done by running it from your favourite text
+Once you have these, run `vorn_finance_tracker.py`. This can either be done by running it from your favourite text
 editor or IDE, at which point the program will ask to be pointed towards the above files, or you can run it from the
 command line with the following arguments:
 
 ```commandline
-python -m monzo_finance_tracker.py <csv_path> <spreadsheet_path>
+python -m vorn_finance_tracker.py <csv_path> <spreadsheet_path>
 ```
+
+If it's your first time running the program, it will ask you who you bank with and what curency symbol to use. This is
+so that the program can parse the data from your CSV file correctly. There are a few banks pre-programmed, but if yours
+isn't included, type `other` and follow the steps in the command terminal.
+
+The following banks are currently pre-programmed:
+```text
+Monzo
+Starling
+```
+The reason there aren't more is because I don't have accounts with other banks that allow me to easily access a CSV file
+of transactions. If you want your bank supported by defualt, see [Contribute](#contribute).
+
+If you have changed bank or currency, and wish to reset either to default (where the program will ask for your input),
+navigate to `files/user_and_bank_data.json`. Towards the top of the file, you'll see a snippet of code that looks
+something like this:
+
+```json
+"user": {
+        "bank": "monzo",
+        "currency": "$"
+    }
+```
+
+In order to reset the bank, just remove whatever is written between the double quotes following `"bank":` and the same
+applies for currency. Make sure to leave the quotes where they are though!
 
 The program will then guide you through the rest of the process yourself, but should you have any issues, please raise
 them with @isaacharrisholt.
@@ -102,7 +130,7 @@ Aaaaaaand you're done! Your new category has been added and will be taken into a
 ### Customising Spreadsheet Layout
 
 By default, the program will use rows B-M of the spreadsheet for months Jan-Dec respectively. You can shift this left
-and right by modifying `lib/spreadsheet_manager.py`. The following piece of code is on line 22:
+and right by modifying `lib/spreadsheet_manager.py`. The following piece of code is on line 17:
 ```python
 column = chr(65 + month)
 ```
@@ -119,7 +147,8 @@ There are a few more things I want to do with this project. The current to-do li
 anything you'd like added, please let me know!
 
 - [x] Make category customisation more user-friendly
-- [ ] Expand support to all banks
+- [x] Expand support to all banks
+- [ ] Better utilise the pandas library to optimise program speed
 - [ ] Expand spreadsheet customisation options
 - [ ] Add a GUI
 - [ ] \(Maybe) Integrate with banking APIs so transactions can be obtained programmatically
@@ -127,6 +156,9 @@ anything you'd like added, please let me know!
 ## Contribute
 
 Pull requests welcome, though if you want to make a major change, please open an issue first for discussion.
+
+If you'd like to provide me with a CSV file from your bank so I can pre-program it into the software, please open an
+issue or message @isaacharrisholt
 
 ## Credits
 
@@ -138,4 +170,4 @@ Pull requests welcome, though if you want to make a major change, please open an
 
 ## License
 
-Monzo Financial Tracker is licensed under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+Vorn Financial Tracker is licensed under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).

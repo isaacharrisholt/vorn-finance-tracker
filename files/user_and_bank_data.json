@@ -1,0 +1,24 @@
+{
+    "user": {
+        "bank": "",
+        "currency": ""
+    },
+    "banks": {
+        "monzo": {
+            "date": "Date",
+            "date_format": "%d/%m/%Y",
+            "vendor": "Name",
+            "amount": "Amount",
+            "reference": "Notes and #tags",
+            "transaction_id": "Transaction ID"
+        },
+        "starling": {
+            "date": "Date",
+            "date_format": "%d/%m/%Y",
+            "vendor": "Counter Party",
+            "amount": "Amount (GBP)",
+            "reference": "Reference",
+            "transaction_id": ""
+        }
+    }
+}

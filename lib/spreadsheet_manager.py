@@ -1,5 +1,7 @@
 import openpyxl as opxl
 
+from .utils import cls
+
 
 # Function to update the spreadsheet with cumulative transaction data
 def insert_into_spreadsheet(filename, outgoings_categories, income_categories, outgoings_balances, income_balances):
@@ -50,6 +52,7 @@ def insert_into_spreadsheet(filename, outgoings_categories, income_categories, o
         except PermissionError:
             input("\nSpreadsheet permission denied. This usually happens because the spreadsheet is open in another "
                   "program. If the spreadsheet is open, try closing it, then press Enter to continue.")
+            cls()
             continue
         break
 
