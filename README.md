@@ -74,7 +74,7 @@ In order to reset the bank, just remove whatever is written between the double q
 applies for currency. Make sure to leave the quotes where they are though!
 
 The program will then guide you through the rest of the process yourself, but should you have any issues, please raise
-them with @isaacharrisholt.
+them with [@isaacharrisholt](https://github.com/isaacharrisholt).
 
 ### Using Custom Categories
 
@@ -158,7 +158,7 @@ anything you'd like added, please let me know!
 Pull requests welcome, though if you want to make a major change, please open an issue first for discussion.
 
 If you'd like to provide me with a CSV file from your bank so I can pre-program it into the software, please open an
-issue or message @isaacharrisholt
+issue or message [@isaacharrisholt](https://github.com/isaacharrisholt).
 
 ## Credits
 
