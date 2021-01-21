@@ -50,6 +50,8 @@ command line with the following arguments:
 python -m vorn_finance_tracker.py <csv_path> <spreadsheet_path>
 ```
 
+If the above code throws a SyntaxError, replace `python` with `python3` and run it that way.
+
 If it's your first time running the program, it will ask you who you bank with and what curency symbol to use. This is
 so that the program can parse the data from your CSV file correctly. There are a few banks pre-programmed, but if yours
 isn't included, type `other` and follow the steps in the command terminal.
