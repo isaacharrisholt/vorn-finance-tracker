@@ -148,6 +148,9 @@ with open("files/transaction_history.json", "r") as transaction_history_file:
     transaction_history = json.load(transaction_history_file)
     transaction_history_file.close()
 
+# Creates a copy of transaction history that won't be edited for totalling later in the program
+transaction_history_for_totals = transaction_history.copy()
+
 # Iterates through transactions. Uses height of transaction_data DataFrame as number of iterations
 for i in range(0, transaction_df.shape[0]):
 
@@ -174,7 +177,7 @@ for i in range(0, transaction_df.shape[0]):
 
 
 # Two variables to store total amount spent and received across all transactions
-can_use = ~transaction_df["Transaction IDs"].isin(transaction_history)
+can_use = ~transaction_df["Transaction IDs"].isin(transaction_history_for_totals)
 total_in = round(transaction_df.where(can_use).loc[transaction_df["Amounts"] > 0, "Amounts"].sum(), 2)
 total_out = round(abs(transaction_df.where(can_use).loc[transaction_df["Amounts"] < 0, "Amounts"].sum()), 2)
 

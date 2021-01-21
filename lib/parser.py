@@ -33,7 +33,7 @@ def parse_category(transaction, categories, currency_symbol):
         return category_map[vendor]
     else:
         # Create a string of categories to display to the user
-        categories = ", ".join(category_options)
+        categories = "{RESET}, {BLUE}".join(category_options)
 
         # Display transaction info to user and have user classify the transaction. If user input is not valid, ask again
         while True:
@@ -45,7 +45,8 @@ def parse_category(transaction, categories, currency_symbol):
                     f"Amount: {{GREEN}}{currency_symbol}{amount}{{RESET}}\n"
                     f"Vendor: {{BLUE}}{vendor.title()}{{RESET}}\n"
                     f"Reference: {{BLUE}}{reference}{{RESET}}\n"
-                    f"Category options are: {categories}\n\n").lower().strip()
+                    f"Category options are: {{BLUE}}{categories}{{RESET}}\n"
+                    f"Alternatively type {{BLUE}}ignore{{RESET}} to ignore this transaction.\n\n").lower().strip()
             else:
                 category = pinput(
                     f"\nWhat category does the following {{RED}}{transaction_type}{{RESET}} transaction come under?\n\n"
@@ -53,9 +54,13 @@ def parse_category(transaction, categories, currency_symbol):
                     f"Amount: {{RED}}{currency_symbol}{amount}{{RESET}}\n"
                     f"Vendor: {{BLUE}}{vendor.title()}{{RESET}}\n"
                     f"Reference: {{BLUE}}{reference}{{RESET}}\n"
-                    f"Category options are: {categories}\n\n").lower().strip()
+                    f"Category options are: {{BLUE}}{categories}{{RESET}}\n"
+                    f"Alternatively type {{BLUE}}ignore{{RESET}} to ignore this transaction.\n\n").lower().strip()
 
-            if category not in category_options:
+            if category == "ignore":
+                cls()
+                return ""
+            elif category not in category_options:
                 pprint("\n{RED}Invalid category.{RESET}")
                 continue
             else:
