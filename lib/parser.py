@@ -14,6 +14,7 @@ def parse_category(transaction, categories, currency_symbol):
     amount = transaction["Amounts"]
     reference = transaction["References"]
 
+    # Categorises transaction as income or outgoings
     if amount > 0:
         transaction_type = "income"
     elif amount < 0:
@@ -21,6 +22,7 @@ def parse_category(transaction, categories, currency_symbol):
     else:
         return ""
 
+    # Gets category options for the transaction type
     category_options = categories[transaction_type]
 
     # Retrieve the category map
@@ -92,6 +94,7 @@ def parse_category(transaction, categories, currency_symbol):
 
 # If user doesn't bank with bank already saved, get CSV headings from user for new bank, then return it
 def parse_bank(user_and_bank_data, transaction_data):
+    # Gets name of user's bank and confirms it
     while True:
         user_bank = input("\nWhat is the name of your bank?\n").strip()
 
@@ -112,17 +115,19 @@ def parse_bank(user_and_bank_data, transaction_data):
         if user_input[0] == "y":
             break
 
+    # Formats and saves user's bank name
     user_bank_lowered = user_bank.lower().replace(" ", "-")
-
     user_and_bank_data["user"]["bank"] = user_bank_lowered
     user_and_bank_data["banks"][user_bank_lowered] = {}
 
+    # Provides user with information on the process that is about to occur
     pinput("\nYou will now be asked to identify the header titles corresponding to certain pieces of information in "
            "your CSV of transaction data from your bank. Your answers are case sensitive, so please take care when "
            "typing. Press {BLUE}Enter{RESET} to continue.\n")
 
     required_info = ["date", "vendor", "amount", "reference"]
 
+    # Gets user to input CSV headers for all required information
     for info in required_info:
         while True:
             csv_header = pinput(f"\nWhat is the header for the {{BLUE}}{info}{{RESET}} information in your CSV "
@@ -138,6 +143,7 @@ def parse_bank(user_and_bank_data, transaction_data):
 
         user_and_bank_data["banks"][user_bank_lowered][info] = csv_header
 
+        # If date information, date format is also needed, so asks user to determine and input
         if info == "date":
             pinput("\nAs well as the CSV header for the date information, the program also needs to know the format in "
                    "which the date is displayed in the CSV. Please input this using a datetime format, such as "
@@ -162,6 +168,7 @@ def parse_bank(user_and_bank_data, transaction_data):
 
             user_and_bank_data["banks"][user_bank_lowered]["date_format"] = date_format
 
+    # Determines if CSV contains transaction IDs, and if so, asks user to input CSV header
     while True:
         user_input = pinput("\nDoes your CSV file contain transaction IDs? "
                             "[{GREEN}Y{RESET}/{RED}N{RESET}]:\n").lower().strip()
@@ -191,6 +198,7 @@ def parse_bank(user_and_bank_data, transaction_data):
 
         user_and_bank_data["banks"][user_bank_lowered]["transaction_id"] = csv_header
     else:
+        # Else leaves transaction ID header blank in file
         user_and_bank_data["banks"][user_bank_lowered]["transaction_id"] = ""
 
     return user_and_bank_data

@@ -46,10 +46,12 @@ while True:
         continue
     break
 
+# Gets user and bank data from file
 with open("files/user_and_bank_data.json", "r") as user_and_bank_data_file:
     user_and_bank_data = json.load(user_and_bank_data_file)
     user_and_bank_data_file.close()
 
+# Creates a list of valid banks for user to choose from
 valid_banks = [bank for bank in user_and_bank_data["banks"]]
 
 if user_and_bank_data["user"]["bank"] == "":
@@ -59,15 +61,18 @@ if user_and_bank_data["user"]["bank"] == "":
                           f"\"Other\" if you bank with a different bank.\n").lower().strip().replace(" ", "-")
         cls()
 
+        # Validates user input
         if user_bank in valid_banks:
             user_and_bank_data["user"]["bank"] = user_bank
         elif user_bank == "other":
+            # If user wants to set up a new bank, starts process
             user_and_bank_data = parser.parse_bank(user_and_bank_data, transaction_data)
             user_bank = user_and_bank_data["user"]["bank"]
         else:
             pprint("\n{RED}Invalid selection, try again.{RESET}")
             continue
 
+        # Saves data and closes file
         with open("files/user_and_bank_data.json", "w") as user_and_bank_data_file:
             json.dump(user_and_bank_data, user_and_bank_data_file, indent=4)
             user_and_bank_data_file.close()
@@ -76,8 +81,8 @@ if user_and_bank_data["user"]["bank"] == "":
 else:
     user_bank = user_and_bank_data["user"]["bank"]
 
+# Checks if user already has a currency symbol set as default. If not, user chooses one.
 if user_and_bank_data["user"]["currency"] == "":
-
     currency_symbol = input(f"\nWhat currency symbol should the program use?\n").lower().strip().replace(" ", "-")
     cls()
 
@@ -90,6 +95,7 @@ if user_and_bank_data["user"]["currency"] == "":
 else:
     currency_symbol = user_and_bank_data["user"]["currency"]
 
+# Gets keys from the user and bank data for the transaction data headings
 date_key = user_and_bank_data["banks"][user_bank]["date"]
 vendor_key = user_and_bank_data["banks"][user_bank]["vendor"]
 amount_key = user_and_bank_data["banks"][user_bank]["amount"]
@@ -97,10 +103,11 @@ reference_key = user_and_bank_data["banks"][user_bank]["reference"]
 transaction_id_key = user_and_bank_data["banks"][user_bank]["transaction_id"]
 date_format = user_and_bank_data["banks"][user_bank]["date_format"]
 
+# Stores a bool of whether the bank CSV contains transaction IDs
 use_transaction_id = transaction_id_key != ""
 
+# Creates a new DataFrame with only relevant information with new, known headings
 transaction_df = pd.DataFrame(index=transaction_data.index)
-
 transaction_df["Months"] = pd.to_datetime(transaction_data[date_key], format=date_format).dt.month
 transaction_df["Vendors"] = transaction_data[vendor_key].str.lower()
 transaction_df["Amounts"] = transaction_data[amount_key].round(2)
@@ -112,9 +119,10 @@ if use_transaction_id:
 else:
     transaction_df["Transaction IDs"] = ""
 
+# Deletes old DataFrame as it's no longer needed, and may be quite large
 del transaction_data
 
-# Generates dictionaries of user income and outgoings categories and rows of the spreadsheet
+# Generates a dictionary of user transaction categories and rows of the spreadsheet
 with open("./files/outgoings_categories.txt", "r") as out_cats, open("./files/income_categories.txt", "r") as in_cats:
     categories = {"income": {}, "outgoings": {}}
 
@@ -135,11 +143,6 @@ with open("./files/outgoings_categories.txt", "r") as out_cats, open("./files/in
     out_cats.close()
     in_cats.close()
 
-# Creates dictionaries based on months that transactions occurred, and creates sub-dictionaries to store categorised
-# transaction balances outgoings_balances = {month: {cat: 0 for cat in outgoings_categories} for month in set(
-# transaction_data[date_key].flatten())} income_balances = {month: {cat: 0 for cat in income_categories} for month in
-# set(transaction_data[date_key].flatten())}
-
 # Loads transaction history (a list of previously processed transaction IDs)
 with open("files/transaction_history.json", "r") as transaction_history_file:
     transaction_history = json.load(transaction_history_file)
@@ -148,8 +151,10 @@ with open("files/transaction_history.json", "r") as transaction_history_file:
 # Iterates through transactions. Uses height of transaction_data DataFrame as number of iterations
 for i in range(0, transaction_df.shape[0]):
 
+    # Creates copy slice of main DataFrame to pass to parser
     transaction = transaction_df.iloc[i].copy()
 
+    # Checks if transaction IDs are being used
     if use_transaction_id:
         transaction_id = transaction["Transaction IDs"]
 
@@ -160,9 +165,8 @@ for i in range(0, transaction_df.shape[0]):
 
     # Uses parser to get category
     category = parser.parse_category(transaction, categories, currency_symbol)
+    # Update main DataFrame
     transaction_df.loc[i, "Categories"] = category
-    # Stores amount
-    # income_balances[month][category] += abs(amount)
 
     if use_transaction_id:
         # If transaction was processed successfully, stores it in transaction history

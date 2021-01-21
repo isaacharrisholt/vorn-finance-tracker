@@ -10,8 +10,6 @@ def insert_into_spreadsheet(filename, categories, transaction_df):
     sheet = workbook.active
 
     # Iterates through transactions
-    # Note: as both outgoings and income dictionaries have the same structure, it doesn't matter which we iterate
-    # through here
     for month in range(1, 13):
         # Uses unicode values to calculate the spreadsheet column letter for this month
         column = chr(65 + month)
@@ -19,10 +17,12 @@ def insert_into_spreadsheet(filename, categories, transaction_df):
         # Iterates through outgoings and adds to spreadsheet
         for category in categories["outgoings"]:
 
+            # Gets amount from transaction DataFrame
             amount = round(abs(transaction_df.loc[(transaction_df["Months"] == month) &
                                                   (transaction_df["Categories"] == category) &
                                                   (transaction_df["Amounts"] < 0),
                                                   "Amounts"].sum()), 2)
+            # Gets row from categories dictionary
             row = categories["outgoings"][category]
 
             if amount != 0:
