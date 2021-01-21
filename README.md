@@ -15,8 +15,9 @@ to Santander themselves to sort. Sorry folks.
 - [openpyxl 3.0.5 or newer](https://pypi.org/project/openpyxl/)
 - [colorama 0.4.4 or newer](https://pypi.org/project/colorama/) (optional, enables colours in command line output)
 
-Once Python is installed, pandas and openpyxl can be installed by running `install_prerequesites.bat` once Python is 
-installed (Windows) or from the command line using [pip](https://pypi.org/project/pip/):
+Once Python is installed, pandas and openpyxl can be installed by running `install_prerequesites.bat` (Windows) or 
+`install_prerequisites.sh` (Linux/macOS) once Python is installed or from the command line using
+[pip](https://pypi.org/project/pip/):
 
 ```commandline
 pip install -r requirements.txt
