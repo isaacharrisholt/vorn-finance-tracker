@@ -3,11 +3,26 @@ import json
 import webbrowser
 from datetime import datetime
 
-from .utils import cls
+from .utils import cls, pprint, pinput
 
 
 # Function to parse the transaction category for an incoming transaction
-def parse_category(transaction_type, month, vendor, amount, reference, category_options, currency_symbol):
+def parse_category(transaction, categories, currency_symbol):
+    # Assigns transaction data to individual variables for ease of access/improved readability
+    month = transaction["Months"]
+    vendor = transaction["Vendors"]
+    amount = transaction["Amounts"]
+    reference = transaction["References"]
+
+    if amount > 0:
+        transaction_type = "income"
+    elif amount < 0:
+        transaction_type = "outgoings"
+    else:
+        return ""
+
+    category_options = categories[transaction_type]
+
     # Retrieve the category map
     category_map = get_category_map(transaction_type)
 
@@ -20,16 +35,26 @@ def parse_category(transaction_type, month, vendor, amount, reference, category_
 
         # Display transaction info to user and have user classify the transaction. If user input is not valid, ask again
         while True:
-            category = input(
-                f"\nWhat category does the following {transaction_type} transaction come under?\n\n"
-                f"Month: {month}\n"
-                f"Amount: {currency_symbol}{amount}\n"
-                f"Vendor: {vendor.title()}\n"
-                f"Reference: \"{reference}\"\n"
-                f"Category options are: {categories}\n\n").lower().strip()
+            if transaction_type == "income":
+                category = pinput(
+                    f"\nWhat category does the following {{GREEN}}{transaction_type}{{RESET}} transaction come "
+                    f"under?\n\n"
+                    f"Month: {{BLUE}}{month}{{RESET}}\n"
+                    f"Amount: {{GREEN}}{currency_symbol}{amount}{{RESET}}\n"
+                    f"Vendor: {{BLUE}}{vendor.title()}{{RESET}}\n"
+                    f"Reference: {{BLUE}}{reference}{{RESET}}\n"
+                    f"Category options are: {categories}\n\n").lower().strip()
+            else:
+                category = pinput(
+                    f"\nWhat category does the following {{RED}}{transaction_type}{{RESET}} transaction come under?\n\n"
+                    f"Month: {{BLUE}}{month}{{RESET}}\n"
+                    f"Amount: {{RED}}{currency_symbol}{amount}{{RESET}}\n"
+                    f"Vendor: {{BLUE}}{vendor.title()}{{RESET}}\n"
+                    f"Reference: {{BLUE}}{reference}{{RESET}}\n"
+                    f"Category options are: {categories}\n\n").lower().strip()
 
             if category not in category_options:
-                print("\nInvalid category.")
+                pprint("\n{RED}Invalid category.{RESET}")
                 continue
             else:
                 break
@@ -38,9 +63,10 @@ def parse_category(transaction_type, month, vendor, amount, reference, category_
         # not blank
         if vendor != "":
             while True:
-                user_input = input(
-                    f"\nWould you like to save {category} as the category for {transaction_type} transactions "
-                    f"with {vendor.title()}? [Y/N]:\n").lower().strip()
+                user_input = pinput(
+                    f"\nWould you like to save {{BLUE}}{category}{{RESET}} as the category for "
+                    f"{{BLUE}}{transaction_type}{{RESET}} transactions with {{BLUE}}{vendor.title()}{{RESET}}? "
+                    f"[{{GREEN}}Y{{RESET}}/{{RED}}N{{RESET}}]:\n").lower().strip()
                 cls()
 
                 try:
@@ -49,16 +75,16 @@ def parse_category(transaction_type, month, vendor, amount, reference, category_
                     else:
                         break
                 except IndexError:
-                    print("\nInvalid input.")
+                    pprint("\n{RED}Invalid input.{RESET}")
                     continue
 
             # If user wants category saved, dave it and update the category mapping file
             if user_input[0] == "y":
                 category_map[vendor] = category
                 update_category_map(transaction_type, category_map)
-                print("\nCategory saved.")
+                pprint("\n{GREEN}Category saved.{RESET}")
             else:
-                print("\nCategory not saved.")
+                pprint("\n{RED}Category not saved.{RESET}")
 
         # Return transaction category
         return category
@@ -70,7 +96,8 @@ def parse_bank(user_and_bank_data, transaction_data):
         user_bank = input("\nWhat is the name of your bank?\n").strip()
 
         while True:
-            user_input = input(f"\nYour bank is {user_bank}, is that correct? [Y/N]:\n").lower().strip()
+            user_input = pinput(f"\nYour bank is {{BLUE}}{user_bank}{{RESET}}, is that "
+                                f"correct? [{{GREEN}}Y{{RESET}}/{{RED}}N{{RESET}}]:\n").lower().strip()
             cls()
 
             try:
@@ -79,7 +106,7 @@ def parse_bank(user_and_bank_data, transaction_data):
                 else:
                     break
             except IndexError:
-                print("\nInvalid input.")
+                pprint("\n{RED}Invalid input.{RESET}")
                 continue
 
         if user_input[0] == "y":
@@ -90,31 +117,32 @@ def parse_bank(user_and_bank_data, transaction_data):
     user_and_bank_data["user"]["bank"] = user_bank_lowered
     user_and_bank_data["banks"][user_bank_lowered] = {}
 
-    print("\nYou will now be asked to identify the header titles corresponding to certain pieces of information in your"
-          " CSV of transaction data from your bank. Your answers are case sensitive, so please take care when typing."
-          "\n")
+    pinput("\nYou will now be asked to identify the header titles corresponding to certain pieces of information in "
+           "your CSV of transaction data from your bank. Your answers are case sensitive, so please take care when "
+           "typing. Press {BLUE}Enter{RESET} to continue.\n")
 
     required_info = ["date", "vendor", "amount", "reference"]
 
     for info in required_info:
         while True:
-            csv_header = input(f"\nWhat is the header for the {info} information in your CSV file?\n").strip()
+            csv_header = pinput(f"\nWhat is the header for the {{BLUE}}{info}{{RESET}} information in your CSV "
+                                f"file?\n").strip()
             cls()
 
             try:
                 transaction_data[csv_header]
             except KeyError:
-                print("\nThat doesn't seem to be a valid header, please try again.\n")
+                pprint("\n{RED}That doesn't seem to be a valid header, please try again.{RESET}\n")
                 continue
             break
 
         user_and_bank_data["banks"][user_bank_lowered][info] = csv_header
 
         if info == "date":
-            input("\nAs well as the CSV header for the date information, the program also needs to know the format in "
-                  "which the date is displayed in the CSV. Please input this using a datetime format, such as "
-                  "\"%d/%m/%Y\". Once you press Enter, a browser window will open and display possible formatting "
-                  "codes.\n")
+            pinput("\nAs well as the CSV header for the date information, the program also needs to know the format in "
+                   "which the date is displayed in the CSV. Please input this using a datetime format, such as "
+                   "{BLUE}%d/%m/%Y{RESET}. Once you press {BLUE}Enter{RESET}, a browser window will open and "
+                   "display possible formatting codes.\n")
             cls()
 
             webbrowser.open("https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes")
@@ -128,14 +156,15 @@ def parse_bank(user_and_bank_data, transaction_data):
                 try:
                     datetime.strptime(example_date, date_format)
                 except:
-                    print("\nThat doesn't seem to be the right date format. Try again.\n")
+                    pprint("\n{RED}That doesn't seem to be the right date format.{RESET} Try again.\n")
                     continue
                 break
 
             user_and_bank_data["banks"][user_bank_lowered]["date_format"] = date_format
 
     while True:
-        user_input = input("\nDoes your CSV file contain transaction IDs? [Y/N]:\n").lower().strip()
+        user_input = pinput("\nDoes your CSV file contain transaction IDs? "
+                            "[{GREEN}Y{RESET}/{RED}N{RESET}]:\n").lower().strip()
         cls()
 
         try:
@@ -144,7 +173,7 @@ def parse_bank(user_and_bank_data, transaction_data):
             else:
                 break
         except IndexError:
-            print("\nInvalid input.")
+            pprint("\n{RED}Invalid input.{RESET}")
             continue
 
     if user_input[0] == "y":
@@ -156,7 +185,7 @@ def parse_bank(user_and_bank_data, transaction_data):
             try:
                 transaction_data[csv_header]
             except KeyError:
-                print("\nThat doesn't seem to be a valid header, please try again.\n")
+                pprint("\n{RED}That doesn't seem to be a valid header, please try again.{RESET}\n")
                 continue
             break
 

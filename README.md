@@ -13,6 +13,7 @@ to Santander themselves to sort. Sorry folks.
 - [Python 3](https://www.python.org/)
 - [pandas 1.2.0 or newer](https://pandas.pydata.org/)
 - [openpyxl 3.0.5 or newer](https://pypi.org/project/openpyxl/)
+- [colorama 0.4.4 or newer](https://pypi.org/project/colorama/) (optional, enables colours in command line output)
 
 Once Python is installed, pandas and openpyxl can be installed by running `install_prerequesites.bat` once Python is 
 installed (Windows) or from the command line using [pip](https://pypi.org/project/pip/):
@@ -20,6 +21,7 @@ installed (Windows) or from the command line using [pip](https://pypi.org/projec
 ```commandline
 pip install -r requirements.txt
 ```
+Note: this _will_ install colorama
 
 ## Installation
 
@@ -57,7 +59,7 @@ Monzo
 Starling
 ```
 The reason there aren't more is because I don't have accounts with other banks that allow me to easily access a CSV file
-of transactions. If you want your bank supported by defualt, see [Contribute](#contribute).
+of transactions. If you want your bank supported by default, see [Contribute](#contribute).
 
 If you have changed bank or currency, and wish to reset either to default (where the program will ask for your input),
 navigate to `files/user_and_bank_data.json`. Towards the top of the file, you'll see a snippet of code that looks
@@ -102,7 +104,7 @@ Each line is in the format `category: row_number` where `row_number` correlates 
 for that category to be inserted into in the spreadsheet.
 
 If you wanted to keep track of say, laundry costs in your spreadsheet (if you use a laundrette for example) and wanted 
-to store the data on row 19, you would simply add `laundry: 19` to a new line:
+to store the data in row 19, you would simply add `laundry: 19` to a new line:
 
 ```text
 food: 7
@@ -118,12 +120,14 @@ laundry: 19
 
 Spaces are acceptable, and case does not matter (the program converts everything to lowercase anyway). The order of the 
 categories doesn't matter, but you may prefer to keep them in the order you've got them in your spreadsheet. The program
-will also filter out any duplicate categories, though the row will be overwritten if you do something like this:
+will also filter out any duplicate categories, though the row will be overwritten, so if you do something like this...
 
 ```text
 laundry: 19
 laundry: 20
 ```
+
+...your laundry spending will be put in row 20.
 
 Aaaaaaand you're done! Your new category has been added and will be taken into account next time you run the program.
 
@@ -148,7 +152,7 @@ anything you'd like added, please let me know!
 
 - [x] Make category customisation more user-friendly
 - [x] Expand support to all banks
-- [ ] Better utilise the pandas library to optimise program speed
+- [x] Better utilise the pandas library to optimise program speed
 - [ ] Expand spreadsheet customisation options
 - [ ] Add a GUI
 - [ ] \(Maybe) Integrate with banking APIs so transactions can be obtained programmatically

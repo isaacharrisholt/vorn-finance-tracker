@@ -1,10 +1,10 @@
 import openpyxl as opxl
 
-from .utils import cls
+from .utils import cls, pprint, pinput
 
 
 # Function to update the spreadsheet with cumulative transaction data
-def insert_into_spreadsheet(filename, outgoings_categories, income_categories, outgoings_balances, income_balances):
+def insert_into_spreadsheet(filename, categories, transaction_df):
     # Opens spreadsheet as an openpyxl Workbook
     workbook = opxl.load_workbook(filename=filename)
     sheet = workbook.active
@@ -12,15 +12,18 @@ def insert_into_spreadsheet(filename, outgoings_categories, income_categories, o
     # Iterates through transactions
     # Note: as both outgoings and income dictionaries have the same structure, it doesn't matter which we iterate
     # through here
-    for month in outgoings_balances:
+    for month in range(1, 13):
         # Uses unicode values to calculate the spreadsheet column letter for this month
         column = chr(65 + month)
 
         # Iterates through outgoings and adds to spreadsheet
-        for category in outgoings_categories:
+        for category in categories["outgoings"]:
 
-            amount = outgoings_balances[month][category]
-            row = outgoings_categories[category]
+            amount = round(abs(transaction_df.loc[(transaction_df["Months"] == month) &
+                                                  (transaction_df["Categories"] == category) &
+                                                  (transaction_df["Amounts"] < 0),
+                                                  "Amounts"].sum()), 2)
+            row = categories["outgoings"][category]
 
             if amount != 0:
                 val = sheet[column + row].value
@@ -31,10 +34,13 @@ def insert_into_spreadsheet(filename, outgoings_categories, income_categories, o
                     sheet[column + row] = amount
 
         # Same as above for income
-        for category in income_categories:
+        for category in categories["income"]:
 
-            amount = income_balances[month][category]
-            row = income_categories[category]
+            amount = round(abs(transaction_df.loc[(transaction_df["Months"] == month) &
+                                                  (transaction_df["Categories"] == category) &
+                                                  (transaction_df["Amounts"] > 0),
+                                                  "Amounts"].sum()), 2)
+            row = categories["income"][category]
 
             if amount != 0:
                 val = sheet[column + row].value
@@ -48,10 +54,11 @@ def insert_into_spreadsheet(filename, outgoings_categories, income_categories, o
     while True:
         try:
             workbook.save(filename=filename)
-            print("\nSpreadsheet saved.")
+            pprint("\n{GREEN}Spreadsheet saved.{RESET}")
         except PermissionError:
-            input("\nSpreadsheet permission denied. This usually happens because the spreadsheet is open in another "
-                  "program. If the spreadsheet is open, try closing it, then press Enter to continue.")
+            pinput("\n{RED}Spreadsheet permission denied.{GREEN} This usually happens because the spreadsheet is open "
+                   "in another program. If the spreadsheet is open, try closing it, then press {BLUE}Enter{RESET} to "
+                   "continue.")
             cls()
             continue
         break
