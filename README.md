@@ -10,14 +10,20 @@ to Santander themselves to sort. Sorry folks.
 
 ## Prerequisite Software
 
-- [Python 3](https://www.python.org/)
+### Windows
+
+None! Everything is provided in the `venv` folder. However, if you don't want to run it that way, you can install the
+prerequisites using `install_prerequesites.bat` after installing Python.
+
+### Mac and Linux
+
+- [Python 3](https://www.python.org/) (make sure to add Python to PATH/environment variables when installing)
 - [pandas 1.2.0 or newer](https://pandas.pydata.org/)
 - [openpyxl 3.0.5 or newer](https://pypi.org/project/openpyxl/)
 - [colorama 0.4.4 or newer](https://pypi.org/project/colorama/) (optional, enables colours in command line output)
 
-Once Python is installed, pandas and openpyxl can be installed by running `install_prerequesites.bat` (Windows) or 
-`install_prerequisites.sh` (Linux/macOS) once Python is installed or from the command line using
-[pip](https://pypi.org/project/pip/):
+Once Python is installed, pandas and openpyxl can be installed by running `install_prerequisites.sh` or from the command
+line using [pip](https://pypi.org/project/pip/):
 
 ```commandline
 pip install -r requirements.txt
@@ -42,17 +48,39 @@ In order to use Vorn Finance Tracker, you need two things:
     like. See [Using Custom Categories](#using-custom-categories) for info on how to use categories other than the 
      default, so you can customise the spreadsheet to your liking.
      
-Once you have these, run `vorn_finance_tracker.py`. This can either be done by running it from your favourite text
-editor or IDE, at which point the program will ask to be pointed towards the above files, or you can run it from the
-command line with the following arguments:
+Now follow the instructions for your operating system below.
+
+### Windows
+
+Run the `start.bat` file. That's it. Bish bash bosh.
+
+Alternatively, follow the instructions for Mac and Linux, making sure to use Windows file paths in the command. Only do
+this if you ran `install_prerequisites.bat` earlier.
+
+### Mac and Linux
+
+Run `vorn_finance_tracker.py`. This can either be done by running it from your favourite text editor or IDE, at which 
+point the program will ask to be pointed towards the above files, or you can open the terminal on your machine (_not_ 
+the Python shell!) and run it with the following arguments:
 
 ```commandline
-python -m vorn_finance_tracker.py <csv_path> <spreadsheet_path>
+python vorn_finance_tracker.py <csv_file_path> <spreadsheet_file_path>
+```
+
+For example:
+
+```commandline
+python vorn_finance_tracker.py ~/transactions.csv spreadsheet.xlsx
 ```
 
 If the above code throws a SyntaxError, replace `python` with `python3` and run it that way.
 
-If it's your first time running the program, it will ask you who you bank with and what curency symbol to use. This is
+The file paths are both optional, too, and the code will just ask you to select your files them later if they're not 
+present in the command.
+
+### Using the program
+
+If it's your first time running the program, it will ask you who you bank with and what currency symbol to use. This is
 so that the program can parse the data from your CSV file correctly. There are a few banks pre-programmed, but if yours
 isn't included, type `other` and follow the steps in the command terminal.
 
@@ -64,19 +92,7 @@ Starling
 The reason there aren't more is because I don't have accounts with other banks that allow me to easily access a CSV file
 of transactions. If you want your bank supported by default, see [Contribute](#contribute).
 
-If you have changed bank or currency, and wish to reset either to default (where the program will ask for your input),
-navigate to `files/user_and_bank_data.json`. Towards the top of the file, you'll see a snippet of code that looks
-something like this:
-
-```json
-"user": {
-        "bank": "monzo",
-        "currency": "$"
-    }
-```
-
-In order to reset the bank, just remove whatever is written between the double quotes following `"bank":` and the same
-applies for currency. Make sure to leave the quotes where they are though!
+If you have switched bank or currency, press `2` or `3` respectively when the menu appears.
 
 The program will then guide you through the rest of the process yourself, but should you have any issues, please raise
 them with [@isaacharrisholt](https://github.com/isaacharrisholt).
@@ -156,6 +172,7 @@ anything you'd like added, please let me know!
 - [x] Make category customisation more user-friendly
 - [x] Expand support to all banks
 - [x] Better utilise the pandas library to optimise program speed
+- [x] Improve user experience
 - [ ] Expand spreadsheet customisation options
 - [ ] Add a GUI
 - [ ] \(Maybe) Integrate with banking APIs so transactions can be obtained programmatically

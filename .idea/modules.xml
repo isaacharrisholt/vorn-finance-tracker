@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/monzo-finance-tracker.iml" filepath="$PROJECT_DIR$/.idea/monzo-finance-tracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/vorn-finance-tracker.iml" filepath="$PROJECT_DIR$/.idea/vorn-finance-tracker.iml" />
     </modules>
   </component>
 </project>

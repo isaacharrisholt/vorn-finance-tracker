@@ -54,10 +54,10 @@ def insert_into_spreadsheet(filename, categories, transaction_df):
     while True:
         try:
             workbook.save(filename=filename)
-            pprint("\n{GREEN}Spreadsheet saved.{RESET}")
+            pprint("{GREEN}Spreadsheet saved.{RESET}")
         except PermissionError:
-            pinput("\n{RED}Spreadsheet permission denied.{GREEN} This usually happens because the spreadsheet is open "
-                   "in another program. If the spreadsheet is open, try closing it, then press {BLUE}Enter{RESET} to "
+            pinput("{RED}Spreadsheet permission denied.{GREEN} This usually happens because the spreadsheet is open in "
+                   "another program. If the spreadsheet is open, try closing it, then press {YELLOW}Enter{RESET} to "
                    "continue.")
             cls()
             continue

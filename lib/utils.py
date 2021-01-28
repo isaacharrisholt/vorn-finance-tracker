@@ -8,9 +8,12 @@ except ModuleNotFoundError:
     colors_installed = False
 
 if colors_installed:
-    colors = {"RED": Fore.LIGHTRED_EX, "GREEN": Fore.GREEN, "BLUE": Fore.LIGHTBLUE_EX, "RESET": Fore.RESET}
+    colors = {"RED": Fore.LIGHTRED_EX, "GREEN": Fore.GREEN, "YELLOW": Fore.LIGHTYELLOW_EX, "RESET": Fore.RESET}
 else:
-    colors = {"RED": "", "GREEN": "", "BLUE": "", "RESET": ""}
+    colors = {"RED": "", "GREEN": "", "YELLOW": "", "RESET": ""}
+
+LINE = "------------------------------------------------------------------------------------------------------------" \
+       "-------"
 
 
 def cls():
@@ -22,9 +25,13 @@ def cls():
 
 def pprint(string):
     formatted_string = string.format(**colors)
+    print(f"\n{LINE}")
     print(formatted_string)
+    print(f"{LINE}\n")
 
 
 def pinput(string):
     formatted_string = string.format(**colors)
-    return input(formatted_string)
+    print(f"\n{LINE}")
+    print(formatted_string)
+    return input(f"{LINE}\n: ")

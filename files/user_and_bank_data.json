@@ -6,19 +6,33 @@
     "banks": {
         "monzo": {
             "date": "Date",
-            "date_format": "%d/%m/%Y",
             "vendor": "Name",
-            "amount": "Amount",
+            "amount": {
+                "type": 1,
+                "header": "Amount"
+            },
             "reference": "Notes and #tags",
             "transaction_id": "Transaction ID"
         },
         "starling": {
             "date": "Date",
-            "date_format": "%d/%m/%Y",
             "vendor": "Counter Party",
-            "amount": "Amount (GBP)",
+            "amount": {
+                "type": 1,
+                "header": "Amount (GBP)"
+            },
             "reference": "Reference",
             "transaction_id": ""
+        },
+        "ran": {
+            "amount": {
+                "type": 1,
+                "header": "Amount"
+            },
+            "date": "Date",
+            "vendor": "Name",
+            "reference": "Notes and #tags",
+            "transaction_id": "Transaction ID"
         }
     }
 }
