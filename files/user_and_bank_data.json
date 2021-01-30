@@ -23,16 +23,6 @@
             },
             "reference": "Reference",
             "transaction_id": ""
-        },
-        "ran": {
-            "amount": {
-                "type": 1,
-                "header": "Amount"
-            },
-            "date": "Date",
-            "vendor": "Name",
-            "reference": "Notes and #tags",
-            "transaction_id": "Transaction ID"
         }
     }
 }
