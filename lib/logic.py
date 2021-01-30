@@ -20,7 +20,7 @@ def get_transaction_data(argv):
     except IndexError:
         pinput("Press {YELLOW}Enter{RESET} then browse to your transaction data file. Transaction data should be in a "
                "CSV file downloaded from your bank.")
-        csv_path = askopenfilename().replace("\\", "/")
+        csv_path = askopenfilename(filetypes=[("CSV Files", "*.csv")]).replace("\\", "/")
         cls()
 
     # Validates that file path is a path to a proper CSV file by attempting to read file with pandas
