@@ -13,22 +13,17 @@ to Santander themselves to sort. Sorry folks.
 ### Windows
 
 None! Everything is provided in the `venv` folder. However, if you don't want to run it that way, you can install the
-prerequisites using `install_prerequesites.bat` after installing Python.
+prerequisites using `install_prerequesites.bat` after installing Python 3.
 
 ### Mac and Linux
+
+Again, nothing needed, but if you prefer not to use the `venv-unix` virtual environment, run `install_prerequisites.sh`
+from the terminal and the following things will be installed.
 
 - [Python 3](https://www.python.org/) (make sure to add Python to PATH/environment variables when installing)
 - [pandas 1.2.0 or newer](https://pandas.pydata.org/)
 - [openpyxl 3.0.5 or newer](https://pypi.org/project/openpyxl/)
 - [colorama 0.4.4 or newer](https://pypi.org/project/colorama/) (optional, enables colours in command line output)
-
-Once Python is installed, pandas and openpyxl can be installed by running `install_prerequisites.sh` or from the command
-line using [pip](https://pypi.org/project/pip/):
-
-```commandline
-pip install -r requirements.txt
-```
-Note: this _will_ install colorama.
 
 ## Installation
 
@@ -59,24 +54,11 @@ this if you ran `install_prerequisites.bat` earlier.
 
 ### Mac and Linux
 
-Run `vorn_finance_tracker.py`. This can either be done by running it from your favourite text editor or IDE, at which 
-point the program will ask to be pointed towards the above files, or you can open the terminal on your machine (_not_ 
-the Python shell!) and run it with the following arguments:
+Run the `start_unix.sh` file. You can do this with the following command:
 
 ```commandline
-python vorn_finance_tracker.py <csv_file_path> <spreadsheet_file_path>
+source start_unix.sh
 ```
-
-For example:
-
-```commandline
-python vorn_finance_tracker.py ~/transactions.csv spreadsheet.xlsx
-```
-
-If the above code throws a SyntaxError, replace `python` with `python3` and run it that way.
-
-The file paths are both optional, too, and the code will just ask you to select your files them later if they're not 
-present in the command.
 
 ### Using the program
 
@@ -153,7 +135,7 @@ Aaaaaaand you're done! Your new category has been added and will be taken into a
 ### Customising Spreadsheet Layout
 
 By default, the program will use rows B-M of the spreadsheet for months Jan-Dec respectively. You can shift this left
-and right by modifying `lib/spreadsheet_manager.py`. The following piece of code is on line 17:
+and right by modifying `lib/spreadsheet_manager.py`. The following piece of code is on line 15:
 ```python
 column = chr(65 + month)
 ```
