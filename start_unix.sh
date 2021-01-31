@@ -10,3 +10,4 @@ fi
 
 source venv-unix/bin/activate
 python3 vorn_finance_tracker.py || python vorn_finance_tracker.py
+read -p ""

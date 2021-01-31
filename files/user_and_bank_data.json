@@ -6,6 +6,7 @@
     "banks": {
         "monzo": {
             "date": "Date",
+            "day_first": true,
             "vendor": "Name",
             "amount": {
                 "type": 1,
@@ -16,6 +17,7 @@
         },
         "starling": {
             "date": "Date",
+            "day_first": true,
             "vendor": "Counter Party",
             "amount": {
                 "type": 1,

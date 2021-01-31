@@ -136,13 +136,15 @@ def create_transaction_df(user_and_bank_data, transaction_data):
         amounts_data[transaction_data[type_key] == outgoings_keyword] = amounts_data[transaction_data[type_key] ==
                                                                                      outgoings_keyword] * -1
 
+    day_first = user_and_bank_data["banks"][user_bank]["day_first"]
+
     # Stores a bool of whether the bank CSV contains transaction IDs
     transaction_id_key = user_and_bank_data["banks"][user_bank]["transaction_id"]
     use_transaction_id = (transaction_id_key != "")
 
     # Creates a new DataFrame with only relevant information with new, known headings
     transaction_df = pd.DataFrame(index=transaction_data.index)
-    transaction_df["Months"] = pd.to_datetime(transaction_data[date_key]).dt.month
+    transaction_df["Months"] = pd.to_datetime(transaction_data[date_key], dayfirst=day_first).dt.month
     transaction_df["Vendors"] = transaction_data[vendor_key].str.lower().fillna("")
     transaction_df["Amounts"] = amounts_data
     transaction_df["References"] = transaction_data[reference_key].fillna("None")
@@ -351,6 +353,23 @@ def setup_bank(user_and_bank_data, transaction_data):
             break
 
         user_and_bank_data["banks"][user_bank_lowered][info] = csv_header
+
+        if info == "date":
+            while True:
+                day_first = pinput("Does your CSV file store dates with day first or month first? Type {YELLOW}day"
+                                   "{RESET} or {YELLOW}month{RESET} to select.").strip().lower()
+
+                if day_first not in ["day", "month"]:
+                    pprint("{RED}Invalid input.{RESET}")
+                    continue
+
+                if day_first == "day":
+                    user_and_bank_data["banks"][user_bank_lowered]["day_first"] = True
+                else:
+                    user_and_bank_data["banks"][user_bank_lowered]["day_first"] = False
+
+                cls()
+                break
 
     # Determines structure of CSV in terms of how transaction amounts are stored
     while True:
